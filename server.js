@@ -169,7 +169,7 @@ app.get("refresh_token", async (req, res) => {
   }
 });
 
-app.get("/genres", async (req, res) => {
+app.get("/api/genres", async (req, res) => {
   try {
     let response = await axios({
       method: "get",
@@ -185,14 +185,14 @@ app.get("/genres", async (req, res) => {
   }
 });
 
-app.get("/top-artists", async (req, res) => {
+app.get("/api/top-artists", async (req, res) => {
   let data = await getTopArtists(access.access_token);
   res.send(data);
 });
 
-app.get("/top-tracks", async (req, res) => {
+app.get("/api/top-tracks", async (req, res) => {
   let data = await getTopTracks("long_term", access.access_token, 50);
   res.send(data);
 });
 
-app.listen(3000);
+app.listen(5000);
