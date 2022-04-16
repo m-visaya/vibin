@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .section {
+        @apply flex justify-center content-center items-center h-screen flex-col container
+    }
+    h1 {
+        @apply text-8xl font-bold
+    }
+
+    .top-tracks > :first-child {
+        @apply md:row-span-2 col-span-2 md:col-span-1
+    }
+}
