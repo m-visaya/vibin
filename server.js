@@ -30,40 +30,31 @@ const generateRandomString = function (length) {
   return text;
 };
 
-const getTopTracks = async (time_range, accessToken, items) => {
-  try {
-    let response = await axios({
-      method: "get",
-      url:
-        "https://api.spotify.com/v1/me/top/tracks?" +
-        qs.stringify({ time_range: time_range, limit: parseInt(items) }),
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        "Content-Type": "application/json",
-      },
-    });
-    return response.data;
-  } catch (error) {
-    console.log(error.response);
+const errorHandler = (error, origin) => {
+  console.log(origin);
+  if (error.response) {
+    console.log(error.response.data);
+    console.log(error.response.status);
+    console.log(error.response.headers);
+    console.log("Error", error.message);
+  } else if (error.request) {
+    console.log(error.request);
+    console.log("Error", error.message);
+  } else {
+    console.log("Error", error.message);
   }
 };
 
-const getTopArtists = async (accessToken, items) => {
-  try {
-    let response = await axios({
-      method: "get",
-      url:
-        "https://api.spotify.com/v1/me/top/artists?" +
-        qs.stringify({ time_range: "long_term", limit: items }),
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        "Content-Type": "application/json",
-      },
-    });
-    return response.data;
-  } catch (error) {
-    console.log(error.response);
-  }
+const sessionActive = (signedCookies) => {
+  let active =
+    Object.keys(signedCookies).length == 0 ? false : !!signedCookies.token;
+  return active;
+};
+
+const getAccessToken = async (signedCookies) => {
+  if (!sessionActive(signedCookies)) return null;
+
+  return JSON.parse(signedCookies.token).access_token;
 };
 
 app.get("/", (req, res) => {
@@ -71,7 +62,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/api/login", (req, res) => {
-  if (req.signedCookies.token) {
+  if (sessionActive(req.signedCookies)) {
     res.redirect("http://localhost:3000");
     return;
   }
@@ -120,24 +111,18 @@ app.get("/callback", async (req, res) => {
         },
         responseType: "json",
       });
-      res.cookie("token", JSON.stringify(response.data), { signed: true });
+      res.cookie("token", JSON.stringify(response.data), {
+        signed: true,
+        httpOnly: true,
+      });
       res.redirect("http://localhost:3000");
     } catch (error) {
-      console.log("callback error");
-      if (error.response) {
-        console.log(error.response.data);
-        console.log(error.response.status);
-        console.log(error.response.headers);
-      } else if (error.request) {
-        console.log(error.request);
-      } else {
-        console.log("Error", error.message);
-      }
+      errorHandler(error, "callback");
     }
   }
 });
 
-app.get("refresh_token", async (req, res) => {
+app.get("refresh-token", async (req, res) => {
   let refresh_token = req.query.refresh_token;
 
   try {
@@ -159,16 +144,7 @@ app.get("refresh_token", async (req, res) => {
     access = response.data;
     res.send(response.data);
   } catch (error) {
-    console.log("callback error");
-    if (error.response) {
-      console.log(error.response.data);
-      console.log(error.response.status);
-      console.log(error.response.headers);
-    } else if (error.request) {
-      console.log(error.request);
-    } else {
-      console.log("Error", error.message);
-    }
+    errorHandler(error, "refresh_token");
   }
 });
 
@@ -184,25 +160,78 @@ app.get("/api/genres", async (req, res) => {
     });
     res.send(response.data);
   } catch (error) {
-    console.log("request error");
+    errorHandler(error, "genres");
   }
 });
 
 app.get("/api/top-artists", async (req, res) => {
-  let data = await getTopArtists(
-    JSON.parse(req.signedCookies.token).access_token || access.access_token,
-    req.query.items || 50
-  );
-  res.send(data);
+  let timeRange = req.query.time_range || "long_term";
+  let accessToken =
+    (await getAccessToken(req.signedCookies)) || access.access_token;
+  let items = req.query.items || 50;
+
+  try {
+    let response = await axios({
+      method: "get",
+      url:
+        "https://api.spotify.com/v1/me/top/artists?" +
+        qs.stringify({ time_range: timeRange, limit: items }),
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      },
+    });
+    res.send(response.data);
+  } catch (error) {
+    errorHandler(error, "top-artists");
+  }
 });
 
 app.get("/api/top-tracks", async (req, res) => {
-  let data = await getTopTracks(
-    "long_term",
-    JSON.parse(req.signedCookies.token).access_token || access.access_token,
-    req.query.items || 50
-  );
-  res.send(data);
+  let timeRange = req.query.timeRange || "long_term";
+  let accessToken =
+    (await getAccessToken(req.signedCookies)) || access.access_token;
+  let items = req.query.items || 50;
+
+  try {
+    if (timeRange == "all") {
+      let data = {};
+      let timeRanges = ["short_term", "medium_term", "long_term"];
+      for (const range of timeRanges) {
+        let response = await axios({
+          method: "get",
+          url:
+            "https://api.spotify.com/v1/me/top/tracks?" +
+            qs.stringify({ time_range: range, limit: parseInt(items) }),
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          },
+        });
+        data[range] = response.data;
+      }
+      res.send(data);
+    } else {
+      let response = await axios({
+        method: "get",
+        url:
+          "https://api.spotify.com/v1/me/top/tracks?" +
+          qs.stringify({ time_range: timeRange, limit: parseInt(items) }),
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+      });
+      res.send(response.data);
+    }
+  } catch (error) {
+    errorHandler(error, "top-tracks");
+    return;
+  }
+});
+
+app.get("/api/session-active", async (req, res) => {
+  res.json(sessionActive(req.signedCookies));
 });
 
 app.listen(5000);
