@@ -48,13 +48,13 @@ const getTopTracks = async (time_range, accessToken, items) => {
   }
 };
 
-const getTopArtists = async (accessToken) => {
+const getTopArtists = async (accessToken, items) => {
   try {
     let response = await axios({
       method: "get",
       url:
         "https://api.spotify.com/v1/me/top/artists?" +
-        qs.stringify({ time_range: "long_term", limit: 4 }),
+        qs.stringify({ time_range: "long_term", limit: items }),
       headers: {
         Authorization: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
@@ -70,7 +70,11 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "/index.html"));
 });
 
-app.get("/login", (req, res) => {
+app.get("/api/login", (req, res) => {
+  if (req.signedCookies.token) {
+    res.redirect("http://localhost:3000");
+    return;
+  }
   var state = generateRandomString(32);
   res.cookie(stateKey, state, { signed: true, httpOnly: true });
   res.redirect(
@@ -116,9 +120,8 @@ app.get("/callback", async (req, res) => {
         },
         responseType: "json",
       });
-
-      access = response.data;
-      res.send(response.data);
+      res.cookie("token", JSON.stringify(response.data), { signed: true });
+      res.redirect("http://localhost:3000");
     } catch (error) {
       console.log("callback error");
       if (error.response) {
@@ -186,12 +189,19 @@ app.get("/api/genres", async (req, res) => {
 });
 
 app.get("/api/top-artists", async (req, res) => {
-  let data = await getTopArtists(access.access_token);
+  let data = await getTopArtists(
+    JSON.parse(req.signedCookies.token).access_token || access.access_token,
+    req.query.items || 50
+  );
   res.send(data);
 });
 
 app.get("/api/top-tracks", async (req, res) => {
-  let data = await getTopTracks("long_term", access.access_token, 50);
+  let data = await getTopTracks(
+    "long_term",
+    JSON.parse(req.signedCookies.token).access_token || access.access_token,
+    req.query.items || 50
+  );
   res.send(data);
 });
 

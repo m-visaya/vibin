@@ -7,7 +7,7 @@ function TopTracks(props) {
   const [data, setData] = useState(null);
 
   useEffect(() => {
-    fetch("http://localhost:3000/api/top-tracks")
+    fetch("http://localhost:3000/api/top-tracks?items=5")
       .then((response) => {
         if (response.ok) {
           return response.json();
@@ -18,21 +18,6 @@ function TopTracks(props) {
         setData(res.items);
       });
   }, []);
-
-  const renderCards = (items) => {
-    let cards = [];
-    console.log(items[0]);
-    for (let index = 0; index < 5; index++) {
-      cards.push(
-        <CardTopTrack
-          title={items[index].name}
-          artists={items[index].artists[0].name}
-          cover={items[index].album.images[0].url}
-        />
-      );
-    }
-    return cards;
-  };
 
   return (
     <>
@@ -50,7 +35,16 @@ function TopTracks(props) {
           <p>Most Recent</p>
         </div>
         <div className="grid md:h-4/6 h-5/6 md:grid-rows-2 md:grid-cols-3 top-tracks lg:gap-8 gap-4 grid-cols-2 grid-rows-3 max-w-5xl relative px-5">
-          {data && renderCards(data)}
+          {data &&
+            data.map((item) => {
+              return (
+                <CardTopTrack
+                  title={item.name}
+                  artists={item.artists}
+                  cover={item.album.images[0].url}
+                />
+              );
+            })}
           <p
             className="text-gray-300 absolute -bottom-10 right-0 px-5 cursor-pointer"
             onClick={props.handleModal}

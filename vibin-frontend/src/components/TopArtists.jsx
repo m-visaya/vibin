@@ -1,7 +1,23 @@
+import { useState, useEffect } from "react";
 import iconMic from "../assets/top-artists-mic.svg";
 import CardTopArtist from "./CardTopArtist";
 
 function TopArtists() {
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    fetch("http://localhost:3000/api/top-artists?items=4")
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+        throw response;
+      })
+      .then((res) => {
+        setData(res.items);
+      });
+  }, []);
+
   return (
     <>
       <div className="section">
@@ -12,10 +28,16 @@ function TopArtists() {
         </div>
       </div>
       <div className="section grid md:grid-cols-2 md:gap-20 max-w-5xl gap-7 px-10">
-        <CardTopArtist></CardTopArtist>
-        <CardTopArtist></CardTopArtist>
-        <CardTopArtist></CardTopArtist>
-        <CardTopArtist></CardTopArtist>
+        {data &&
+          data.map((item) => {
+            return (
+              <CardTopArtist
+                name={item.name}
+                followers={item.followers.total}
+                cover={item.images[0].url}
+              />
+            );
+          })}
       </div>
     </>
   );
