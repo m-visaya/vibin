@@ -8,7 +8,9 @@ function CardTopTrack({ title, artists, cover }) {
     >
       <div className="absolute h-full w-full rounded-xl bg-gradient-to-t from-stone-900 bottom-0 left-0"></div>
       <div className="mt-auto mb-3 mx-2 z-10">
-        <h2 className="text-gray-50 text-3xl line-clamp-2">{title}</h2>
+        <h2 className="text-gray-50 text-3xl line-clamp-2 pb-1 leading-none">
+          {title}
+        </h2>
         <h4 className="text-gray-50 line-clamp-1">
           {artists.reduce(
             (all_artists, artist, index) =>

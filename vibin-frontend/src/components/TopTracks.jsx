@@ -5,9 +5,10 @@ import { useState, useEffect } from "react";
 
 function TopTracks(props) {
   const [data, setData] = useState(null);
+  const [timeRange, setTimeRange] = useState("long_term");
 
   useEffect(() => {
-    fetch("http://localhost:3000/api/top-tracks?items=5")
+    fetch(`http://localhost:3000/api/top-tracks?timeRange=all&items=5`)
       .then((response) => {
         if (response.ok) {
           return response.json();
@@ -15,7 +16,7 @@ function TopTracks(props) {
         throw response;
       })
       .then((res) => {
-        setData(res.items);
+        setData(res);
       });
   }, []);
 
@@ -30,13 +31,19 @@ function TopTracks(props) {
       </div>
       <div className="section">
         <div className="flex mb-10 -mt-10 gap-x-20 text-gray-200">
-          <p>All Time</p>
-          <p>Past Months</p>
-          <p>Most Recent</p>
+          <p className="time-range" onClick={() => setTimeRange("long_term")}>
+            All Time
+          </p>
+          <p className="time-range" onClick={() => setTimeRange("medium_term")}>
+            Past Months
+          </p>
+          <p className="time-range" onClick={() => setTimeRange("short_term")}>
+            Most Recent
+          </p>
         </div>
         <div className="grid md:h-4/6 h-5/6 md:grid-rows-2 md:grid-cols-3 top-tracks lg:gap-8 gap-4 grid-cols-2 grid-rows-3 max-w-5xl relative px-5">
           {data &&
-            data.map((item) => {
+            data[timeRange].items.map((item) => {
               return (
                 <CardTopTrack
                   title={item.name}

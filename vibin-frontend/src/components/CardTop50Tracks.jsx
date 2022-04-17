@@ -1,6 +1,6 @@
 import cover from "../assets/cover.png";
 
-function CardTop50Tracks(props) {
+function CardTop50Tracks({ title, rank, cover }) {
   return (
     <div className="flex gap-4 relative">
       <img
@@ -9,14 +9,14 @@ function CardTop50Tracks(props) {
         className="w-28 aspect-square object-cover rounded-xl"
       />
       <div className="text-gray-200">
-        <h2 className="text-2xl line-clamp-2 leading-none">{props.title}</h2>
+        <h2 className="text-2xl line-clamp-2 leading-none">{title}</h2>
         <p>123 followers</p>
         <p className="mt-2 bg-green-500 text-gray-200 text-center rounded-md text-xs pb-1 w-fit px-2">
           genre
         </p>
       </div>
       <h3 className="absolute bottom-0 right-0 text-gray-200 text-4xl p-2 font-bold">
-        {props.rank}
+        {rank}
       </h3>
     </div>
   );

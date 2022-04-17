@@ -1,6 +1,22 @@
 import CardTop50Tracks from "./CardTop50Tracks";
+import { useState, useEffect } from "react";
 
 function ModalTop50(props) {
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    fetch(`http://localhost:3000/api/top-tracks`)
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+        throw response;
+      })
+      .then((res) => {
+        setData(res);
+      });
+  }, []);
+
   return (
     <div className="w-screen h-screen bg-black fixed flex justify-center items-center content-center py-10 bg-opacity-20 z-50">
       <div className="overflow-y-auto bg-stone-900 w-full h-full lg:mx-32 rounded-xl opacity-100 flex flex-col items-center p-5 relative">
@@ -20,7 +36,17 @@ function ModalTop50(props) {
           Top 50 <span className="text-green-500">Tracks</span>{" "}
         </h2>
         <div className="mt-10 grid grid-cols-2 gap-x-8 gap-y-6 w-full lg:w-4/6">
-          {generateCards()}
+          {data &&
+            data.items.map((item, index) => {
+              return (
+                <CardTop50Tracks
+                  rank={index + 1}
+                  title={item.name}
+                  key={index}
+                  cover={item.album.images[0].url}
+                ></CardTop50Tracks>
+              );
+            })}
         </div>
       </div>
     </div>
@@ -39,13 +65,7 @@ function generateCards() {
   ];
   let items = [];
   for (let index = 0; index < 50; index++) {
-    items.push(
-      <CardTop50Tracks
-        rank={index + 1}
-        title={titles[index % 3]}
-        key={index}
-      ></CardTop50Tracks>
-    );
+    items.push();
   }
   return items;
 }

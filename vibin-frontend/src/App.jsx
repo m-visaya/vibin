@@ -7,14 +7,23 @@ import TopTracks from "./components/TopTracks";
 
 function App() {
   const [modalVisible, setModalVisible] = useState(false);
-  const [loggedIn, setLoggedIn] = useState(null);
+  const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
-    setLoggedIn(document.cookie);
+    fetch("http://localhost:3000/api/session-active")
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+        throw response;
+      })
+      .then((res) => {
+        setLoggedIn(res);
+      });
   }, []);
 
   const login = () => {
-    window.location = "http://localhost:5000/api/login";
+    window.location = "http://localhost:3000/api/login";
   };
 
   const closeModal = () => {

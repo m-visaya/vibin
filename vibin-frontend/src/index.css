@@ -13,4 +13,8 @@
     .top-tracks > :first-child {
         @apply md:row-span-2 col-span-2 md:col-span-1
     }
+
+    .time-range {
+        @apply cursor-pointer hover:bg-green-600 rounded-lg px-4 py-2 transition-colors ease-in duration-200
+    }
 }
