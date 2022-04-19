@@ -4,26 +4,30 @@ import ModalTop50 from "./components/ModalTop50";
 import Welcome from "./components/Welcome";
 import TopArtists from "./components/TopArtists";
 import TopTracks from "./components/TopTracks";
+import useFetch from "./useFetch";
 
 function App() {
   const [modalVisible, setModalVisible] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
+  const [timeRange, setTimeRange] = useState("long_term");
+  const [data, setData] = useFetch();
 
   useEffect(() => {
-    fetch("http://localhost:3000/api/session-active")
+    fetch("/api/session-active")
       .then((response) => {
         if (response.ok) {
           return response.json();
         }
-        throw response;
+        window.location = "/api/login";
       })
       .then((res) => {
         setLoggedIn(res);
+        setData(res);
       });
   }, []);
 
   const login = () => {
-    window.location = "http://localhost:3000/api/login";
+    window.location = "/api/login";
   };
 
   const closeModal = () => {
@@ -37,14 +41,22 @@ function App() {
 
   return (
     <>
-      {modalVisible && <ModalTop50 onClose={() => closeModal()} />}
+      {modalVisible && (
+        <ModalTop50
+          handleClose={() => closeModal()}
+          data={data.topTracks[timeRange]}
+        />
+      )}
       <div className="bg-stone-800 flex flex-col items-center">
         <Welcome handleLogin={login} loggedIn={loggedIn}></Welcome>
-        {loggedIn && [
+        {data && [
           <TopTracks
             handleModal={() => (modalVisible ? closeModal() : openModal())}
+            handleTimeRange={setTimeRange}
+            data={data.topTracks}
+            timeRange={timeRange}
           ></TopTracks>,
-          <TopArtists></TopArtists>,
+          <TopArtists data={data.topArtists}></TopArtists>,
         ]}
       </div>
     </>

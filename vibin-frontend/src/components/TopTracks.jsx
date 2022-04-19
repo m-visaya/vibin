@@ -1,25 +1,9 @@
 import iconDisc from "../assets/top-tracks-disc.svg";
 import iconExpand from "../assets/expand.svg";
 import CardTopTrack from "./CardTopTrack";
-import { useState, useEffect } from "react";
 
-function TopTracks(props) {
-  const [data, setData] = useState(null);
-  const [timeRange, setTimeRange] = useState("long_term");
-
-  useEffect(() => {
-    fetch(`http://localhost:3000/api/top-tracks?timeRange=all&items=5`)
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        }
-        throw response;
-      })
-      .then((res) => {
-        setData(res);
-      });
-  }, []);
-
+function TopTracks({ data, timeRange, handleTimeRange, handleModal }) {
+  const tracks = data[timeRange].items.slice(0, 5);
   return (
     <>
       <div className="section">
@@ -31,19 +15,28 @@ function TopTracks(props) {
       </div>
       <div className="section">
         <div className="flex mb-10 -mt-10 gap-x-20 text-gray-200">
-          <p className="time-range" onClick={() => setTimeRange("long_term")}>
+          <p
+            className="time-range"
+            onClick={() => handleTimeRange("long_term")}
+          >
             All Time
           </p>
-          <p className="time-range" onClick={() => setTimeRange("medium_term")}>
+          <p
+            className="time-range"
+            onClick={() => handleTimeRange("medium_term")}
+          >
             Past Months
           </p>
-          <p className="time-range" onClick={() => setTimeRange("short_term")}>
+          <p
+            className="time-range"
+            onClick={() => handleTimeRange("short_term")}
+          >
             Most Recent
           </p>
         </div>
         <div className="grid md:h-4/6 h-5/6 md:grid-rows-2 md:grid-cols-3 top-tracks lg:gap-8 gap-4 grid-cols-2 grid-rows-3 max-w-5xl relative px-5">
           {data &&
-            data[timeRange].items.map((item) => {
+            tracks.map((item) => {
               return (
                 <CardTopTrack
                   title={item.name}
@@ -54,7 +47,7 @@ function TopTracks(props) {
             })}
           <p
             className="text-gray-300 absolute -bottom-10 right-0 px-5 cursor-pointer"
-            onClick={props.handleModal}
+            onClick={handleModal}
           >
             view top 50
             <img src={iconExpand} alt="expand" className="inline w-5 mb-2" />

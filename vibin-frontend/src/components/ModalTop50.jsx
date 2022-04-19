@@ -1,28 +1,13 @@
 import CardTop50Tracks from "./CardTop50Tracks";
 import { useState, useEffect } from "react";
 
-function ModalTop50(props) {
-  const [data, setData] = useState(null);
-
-  useEffect(() => {
-    fetch(`http://localhost:3000/api/top-tracks`)
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        }
-        throw response;
-      })
-      .then((res) => {
-        setData(res);
-      });
-  }, []);
-
+function ModalTop50({ handleClose, data }) {
   return (
     <div className="w-screen h-screen bg-black fixed flex justify-center items-center content-center py-10 bg-opacity-20 z-50">
       <div className="overflow-y-auto bg-stone-900 w-full h-full lg:mx-32 rounded-xl opacity-100 flex flex-col items-center p-5 relative">
         <p
           className="absolute top-0 right-0 text-gray-200 mx-8 my-4 text-2xl hover:text-white cursor-pointer"
-          onClick={props.onClose}
+          onClick={handleClose}
         >
           {" "}
           x{" "}
@@ -51,23 +36,6 @@ function ModalTop50(props) {
       </div>
     </div>
   );
-}
-
-function closeModal(e) {
-  console.log(e);
-}
-
-function generateCards() {
-  let titles = [
-    "Lorem ipsum dolor sit amet.",
-    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus, rem.",
-    "Lorem ipsum",
-  ];
-  let items = [];
-  for (let index = 0; index < 50; index++) {
-    items.push();
-  }
-  return items;
 }
 
 export default ModalTop50;
