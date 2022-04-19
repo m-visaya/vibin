@@ -32,22 +32,19 @@ const generateRandomString = function (length) {
 
 const errorHandler = (error, origin) => {
   console.log(origin);
+  console.log("Error", error.message);
   if (error.response) {
     console.log(error.response.data);
     console.log(error.response.status);
     console.log(error.response.headers);
-    console.log("Error", error.message);
   } else if (error.request) {
     console.log(error.request);
-    console.log("Error", error.message);
-  } else {
-    console.log("Error", error.message);
   }
 };
 
 const sessionActive = (signedCookies) => {
   let active =
-    Object.keys(signedCookies).length == 0 ? false : !!signedCookies.token;
+    Object.keys(signedCookies).length == 0 ? false : "token" in signedCookies;
   return active;
 };
 
@@ -118,6 +115,7 @@ app.get("/callback", async (req, res) => {
       res.redirect("http://localhost:3000");
     } catch (error) {
       errorHandler(error, "callback");
+      res.redirect("http://localhost:3000");
     }
   }
 });
@@ -188,7 +186,7 @@ app.get("/api/top-artists", async (req, res) => {
 });
 
 app.get("/api/top-tracks", async (req, res) => {
-  let timeRange = req.query.timeRange || "long_term";
+  let timeRange = req.query.timeRange || "all";
   let accessToken =
     (await getAccessToken(req.signedCookies)) || access.access_token;
   let items = req.query.items || 50;
