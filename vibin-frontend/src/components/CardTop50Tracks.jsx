@@ -1,6 +1,4 @@
-import cover from "../assets/cover.png";
-
-function CardTop50Tracks({ title, rank, cover }) {
+function CardTop50Tracks({ title, artists, rank, cover }) {
   return (
     <div className="flex gap-4 relative">
       <img
@@ -10,9 +8,15 @@ function CardTop50Tracks({ title, rank, cover }) {
       />
       <div className="text-gray-200">
         <h2 className="text-2xl line-clamp-2 leading-none">{title}</h2>
-        <p>123 followers</p>
-        <p className="mt-2 bg-green-500 text-gray-200 text-center rounded-md text-xs pb-1 w-fit px-2">
-          genre
+        <p className="line-clamp-1">
+          {" "}
+          {artists.reduce(
+            (all_artists, artist, index) =>
+              index + 1 < artists.length
+                ? `${all_artists}${artist.name}, `
+                : `${all_artists}${artist.name}`,
+            ""
+          )}
         </p>
       </div>
       <h3 className="absolute bottom-0 right-0 text-gray-200 text-4xl p-2 font-bold">

@@ -43,9 +43,7 @@ const errorHandler = (error, origin) => {
 };
 
 const sessionActive = (signedCookies) => {
-  let active =
-    Object.keys(signedCookies).length == 0 ? false : "token" in signedCookies;
-  return active;
+  return !!signedCookies?.token;
 };
 
 const getAccessToken = async (signedCookies) => {
@@ -54,8 +52,51 @@ const getAccessToken = async (signedCookies) => {
   return JSON.parse(signedCookies.token).access_token;
 };
 
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "/index.html"));
+const tokenExpired = (signedCookies) => {
+  return (
+    signedCookies.token &&
+    new Date(JSON.parse(signedCookies.token).expires_in) <= new Date()
+  );
+};
+
+const refreshToken = async (refreshToken) => {
+  try {
+    let response = await axios({
+      method: "post",
+      url: "https://accounts.spotify.com/api/token",
+      data: new URLSearchParams({
+        grant_type: "refresh_token",
+        refresh_token: refreshToken,
+      }),
+      headers: {
+        Authorization:
+          "Basic " +
+          Buffer.from(client_id + ":" + client_secret).toString("base64"),
+      },
+      responseType: "json",
+    });
+    response.data.expires_in = new Date(new Date().getTime() + 3600 * 1000);
+    return response.data;
+  } catch (error) {
+    errorHandler(error, "refresh token");
+    return;
+  }
+};
+
+app.get("/", async (req, res) => {
+  if (tokenExpired(req.signedCookies)) {
+    let token = await refreshToken(
+      JSON.parse(req.signedCookies.token).refresh_token
+    );
+    res.cookie("token", JSON.stringify(token), {
+      signed: true,
+      httpOnly: true,
+    });
+  }
+
+  res.json({
+    response: [JSON.parse(req.signedCookies.token)],
+  });
 });
 
 app.get("/api/login", (req, res) => {
@@ -108,6 +149,7 @@ app.get("/callback", async (req, res) => {
         },
         responseType: "json",
       });
+      response.data.expires_in = new Date(new Date().getTime() + 3600 * 1000);
       res.cookie("token", JSON.stringify(response.data), {
         signed: true,
         httpOnly: true,
@@ -117,32 +159,6 @@ app.get("/callback", async (req, res) => {
       errorHandler(error, "callback");
       res.redirect("http://localhost:3000");
     }
-  }
-});
-
-app.get("refresh-token", async (req, res) => {
-  let refresh_token = req.query.refresh_token;
-
-  try {
-    let response = await axios({
-      method: "post",
-      url: "https://accounts.spotify.com/api/token",
-      data: new URLSearchParams({
-        grant_type: "refresh_token",
-        refresh_token: refresh_token,
-      }),
-      headers: {
-        Authorization:
-          "Basic " +
-          Buffer.from(client_id + ":" + client_secret).toString("base64"),
-      },
-      responseType: "json",
-    });
-
-    access = response.data;
-    res.send(response.data);
-  } catch (error) {
-    errorHandler(error, "refresh_token");
   }
 });
 
@@ -163,6 +179,16 @@ app.get("/api/genres", async (req, res) => {
 });
 
 app.get("/api/top-artists", async (req, res) => {
+  if (tokenExpired(req.signedCookies)) {
+    let token = await refreshToken(
+      JSON.parse(req.signedCookies.token).refresh_token
+    );
+    res.cookie("token", JSON.stringify(token), {
+      signed: true,
+      httpOnly: true,
+    });
+  }
+
   let timeRange = req.query.time_range || "long_term";
   let accessToken =
     (await getAccessToken(req.signedCookies)) || access.access_token;
@@ -181,11 +207,22 @@ app.get("/api/top-artists", async (req, res) => {
     });
     res.send(response.data);
   } catch (error) {
-    errorHandler(error, "top-artists");
+    // errorHandler(error, "top-artists");
+    res.status(500).send("Something went wrong");
   }
 });
 
 app.get("/api/top-tracks", async (req, res) => {
+  if (tokenExpired(req.signedCookies)) {
+    let token = await refreshToken(
+      JSON.parse(req.signedCookies.token).refresh_token
+    );
+    res.cookie("token", JSON.stringify(token), {
+      signed: true,
+      httpOnly: true,
+    });
+  }
+
   let timeRange = req.query.timeRange || "all";
   let accessToken =
     (await getAccessToken(req.signedCookies)) || access.access_token;
@@ -223,8 +260,8 @@ app.get("/api/top-tracks", async (req, res) => {
       res.send(response.data);
     }
   } catch (error) {
-    errorHandler(error, "top-tracks");
-    return;
+    // errorHandler(error, "top-tracks");
+    res.status(500).send("Something went wrong");
   }
 });
 

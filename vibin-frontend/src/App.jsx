@@ -10,7 +10,7 @@ function App() {
   const [modalVisible, setModalVisible] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
   const [timeRange, setTimeRange] = useState("long_term");
-  const [data, setData] = useFetch();
+  const [data, status] = useFetch(loggedIn);
 
   useEffect(() => {
     fetch("/api/session-active")
@@ -22,7 +22,6 @@ function App() {
       })
       .then((res) => {
         setLoggedIn(res);
-        setData(res);
       });
   }, []);
 
@@ -49,14 +48,25 @@ function App() {
       )}
       <div className="bg-stone-800 flex flex-col items-center">
         <Welcome handleLogin={login} loggedIn={loggedIn}></Welcome>
+        {loggedIn &&
+          !data &&
+          (status == "Fetching" ? (
+            <p className="text-gray-300 text-xl"> Fetching data </p>
+          ) : (
+            <p className="text-gray-300 text-xl"> Something went wrong </p>
+          ))}
         {data && [
           <TopTracks
             handleModal={() => (modalVisible ? closeModal() : openModal())}
             handleTimeRange={setTimeRange}
             data={data.topTracks}
             timeRange={timeRange}
+            key="container-top-tracks"
           ></TopTracks>,
-          <TopArtists data={data.topArtists}></TopArtists>,
+          <TopArtists
+            data={data.topArtists}
+            key="container-top-artists"
+          ></TopArtists>,
         ]}
       </div>
     </>

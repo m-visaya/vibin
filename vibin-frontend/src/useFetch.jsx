@@ -1,29 +1,30 @@
 import { useEffect, useState } from "react";
 
-export default function useFetch() {
+export default function useFetch(loggedIn) {
   const [data, setData] = useState(null);
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [status, setStatus] = useState("Fetching");
 
   useEffect(() => {
     (async () => {
       if (!loggedIn) {
         return;
       }
+      try {
+        const topArtistsResponse = await fetch("/api/top-artists?items=4");
+        const topTracksResponse = await fetch("/api/top-tracks");
 
-      const [topArtistsResponse, topTracksResponse] = await Promise.all([
-        fetch("/api/top-artists?items=4"),
-        fetch("/api/top-tracks"),
-      ]);
+        if (!(topTracksResponse.ok && topArtistsResponse.ok)) {
+          throw topArtistsResponse || topTracksResponse;
+        }
 
-      if (!(topTracksResponse.ok && topArtistsResponse.ok)) {
-        throw topArtistsResponse || topTracksResponse;
+        const topTracks = await topTracksResponse.json();
+        const topArtists = await topArtistsResponse.json();
+        setData({ topTracks: topTracks, topArtists: topArtists });
+      } catch (error) {
+        setStatus("Failed");
       }
-
-      const topTracks = await topTracksResponse.json();
-      const topArtists = await topArtistsResponse.json();
-      setData({ topTracks: topTracks, topArtists: topArtists });
     })();
-  }, []);
+  }, [loggedIn]);
 
-  return [data, (state) => setLoggedIn(state)];
+  return [data, status];
 }

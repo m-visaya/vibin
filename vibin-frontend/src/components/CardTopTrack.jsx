@@ -1,5 +1,3 @@
-import cover from "../assets/cover.png";
-
 function CardTopTrack({ title, artists, cover }) {
   return (
     <div

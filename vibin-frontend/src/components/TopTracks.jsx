@@ -36,12 +36,13 @@ function TopTracks({ data, timeRange, handleTimeRange, handleModal }) {
         </div>
         <div className="grid md:h-4/6 h-5/6 md:grid-rows-2 md:grid-cols-3 top-tracks lg:gap-8 gap-4 grid-cols-2 grid-rows-3 max-w-5xl relative px-5">
           {data &&
-            tracks.map((item) => {
+            tracks.map((item, index) => {
               return (
                 <CardTopTrack
                   title={item.name}
                   artists={item.artists}
                   cover={item.album.images[0].url}
+                  key={"top-track-" + index}
                 />
               );
             })}

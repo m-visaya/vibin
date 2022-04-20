@@ -13,12 +13,13 @@ function TopArtists({ data }) {
       </div>
       <div className="section grid md:grid-cols-2 md:gap-20 max-w-5xl gap-7 px-10">
         {data &&
-          data.items.map((item) => {
+          data.items.map((item, index) => {
             return (
               <CardTopArtist
                 name={item.name}
                 followers={item.followers.total}
                 cover={item.images[0].url}
+                key={"top-artist-" + index}
               />
             );
           })}
