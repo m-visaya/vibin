@@ -9,12 +9,12 @@ function TopTracks({ data, timeRange, handleTimeRange, handleModal }) {
       <div className="section">
         <div className="relative text-center flex flex-col -mt-36">
           <img src={iconDisc} className="h-36 -mb-4"></img>
-          <h1 className="text-gray-200">YOUR TOP</h1>
-          <h1 className="text-green-500">TRACKS</h1>
+          <h1 className="text-gray-300">YOUR TOP</h1>
+          <h1 className="text-primary">TRACKS</h1>
         </div>
       </div>
       <div className="section">
-        <div className="flex mb-10 -mt-10 gap-x-20 text-gray-200">
+        <div className="flex mb-10 -mt-10 gap-x-20 text-gray-300">
           <p
             className="time-range"
             onClick={() => handleTimeRange("long_term")}

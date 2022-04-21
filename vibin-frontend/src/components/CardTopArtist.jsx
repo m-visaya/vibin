@@ -6,7 +6,7 @@ function CardTopArtist({ name, followers, cover }) {
         alt=""
         className="w-28 md:w-36 aspect-square object-cover rounded-3xl"
       />
-      <div className="text-gray-200">
+      <div className="text-gray-300">
         <h2 className="text-2xl line-clamp-2">{name}</h2>
         <p>{formatFollowers(followers)} followers</p>
       </div>

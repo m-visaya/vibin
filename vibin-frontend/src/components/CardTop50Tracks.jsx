@@ -6,7 +6,7 @@ function CardTop50Tracks({ title, artists, rank, cover }) {
         alt=""
         className="w-28 aspect-square object-cover rounded-xl"
       />
-      <div className="text-gray-200">
+      <div className="text-gray-300">
         <h2 className="text-2xl line-clamp-2 leading-none">{title}</h2>
         <p className="line-clamp-1">
           {" "}
@@ -19,7 +19,7 @@ function CardTop50Tracks({ title, artists, rank, cover }) {
           )}
         </p>
       </div>
-      <h3 className="absolute bottom-0 right-0 text-gray-200 text-4xl p-2 font-bold">
+      <h3 className="absolute bottom-0 right-0 text-gray-300 text-4xl p-2 font-bold">
         {rank}
       </h3>
     </div>

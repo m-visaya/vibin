@@ -31,11 +31,9 @@ function App() {
 
   const closeModal = () => {
     setModalVisible(false);
-    document.getElementById("body").style.overflowY = "auto";
   };
   const openModal = () => {
     setModalVisible(true);
-    document.getElementById("body").style.overflowY = "hidden";
   };
 
   return (
@@ -46,8 +44,12 @@ function App() {
           data={data.topTracks[timeRange]}
         />
       )}
-      <div className="bg-stone-800 flex flex-col items-center">
-        <Welcome handleLogin={login} loggedIn={loggedIn}></Welcome>
+      <div className="bg-secondary flex flex-col items-center">
+        <Welcome
+          handleLogin={login}
+          loggedIn={loggedIn}
+          status={status}
+        ></Welcome>
         {loggedIn &&
           !data &&
           (status == "Fetching" ? (
