@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+
 import "./index.css";
 import ModalTop50 from "./components/ModalTop50";
 import Welcome from "./components/Welcome";
@@ -50,13 +52,6 @@ function App() {
           loggedIn={loggedIn}
           status={status}
         ></Welcome>
-        {loggedIn &&
-          !data &&
-          (status == "Fetching" ? (
-            <p className="text-gray-300 text-xl"> Fetching data </p>
-          ) : (
-            <p className="text-gray-300 text-xl"> Something went wrong </p>
-          ))}
         {data && [
           <TopTracks
             handleModal={() => (modalVisible ? closeModal() : openModal())}

@@ -20,6 +20,7 @@ export default function useFetch(loggedIn) {
         const topTracks = await topTracksResponse.json();
         const topArtists = await topArtistsResponse.json();
         setData({ topTracks: topTracks, topArtists: topArtists });
+        setStatus("Success");
       } catch (error) {
         setStatus("Failed");
       }

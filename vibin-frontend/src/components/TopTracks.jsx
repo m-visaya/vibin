@@ -1,3 +1,5 @@
+import { motion } from "framer-motion";
+
 import iconDisc from "../assets/top-tracks-disc.svg";
 import iconExpand from "../assets/expand.svg";
 import CardTopTrack from "./CardTopTrack";
@@ -6,13 +8,19 @@ function TopTracks({ data, timeRange, handleTimeRange, handleModal }) {
   const tracks = data[timeRange].items.slice(0, 5);
   return (
     <>
-      <div className="section">
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 1 }}
+        viewport={{ once: true, amount: "all" }}
+        className="section"
+      >
         <div className="relative text-center flex flex-col -mt-36">
           <img src={iconDisc} className="h-36 -mb-4"></img>
           <h1 className="text-gray-300">YOUR TOP</h1>
           <h1 className="text-primary">TRACKS</h1>
         </div>
-      </div>
+      </motion.div>
       <div className="section">
         <div className="flex mb-10 -mt-10 gap-x-20 text-gray-300">
           <p

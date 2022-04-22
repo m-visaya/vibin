@@ -1,4 +1,5 @@
-import { motion } from "framer-motion";
+import { motion, useAnimation } from "framer-motion";
+import { useEffect } from "react";
 
 import "../index.css";
 import Button from "./Button";
@@ -7,6 +8,28 @@ import bgDisc from "../assets/bg-disc.svg";
 import iconScrollDown from "../assets/icon-scroll-down.svg";
 
 function Welcome({ loggedIn, handleLogin, status }) {
+  const controls = useAnimation();
+
+  const sequence = async () => {
+    await controls.start((i) => ({
+      x: [i < 1 ? "50%" : "-50%", "0%"],
+      opacity: [0, 1],
+      transition: { duration: 1 },
+    }));
+    return await controls.start((i) => ({
+      rotate: 360 * i,
+      transition: {
+        repeat: Infinity,
+        duration: 5,
+        ease: "linear",
+      },
+    }));
+  };
+
+  useEffect(() => {
+    sequence();
+  }, []);
+
   return (
     <div className="relative overflow-hidden w-full">
       <div className="section mx-auto">
@@ -18,29 +41,33 @@ function Welcome({ loggedIn, handleLogin, status }) {
           className="absolute bottom-[80%] h-2/5 rotate-45 lg:hidden"
         />
         <motion.img
-          animate={{ rotate: 360 }}
-          transition={{
-            repeat: Infinity,
-            duration: 5,
-            ease: "linear",
-          }}
+          animate={controls}
+          custom={1}
           src={bgDisc}
           alt="bgDisc"
-          className="absolute right-[80%] h-5/6 rotate-45 hidden lg:block"
+          className="absolute right-[80%] h-5/6 rotate-90 hidden lg:block"
         />
         <motion.img
-          animate={{ rotate: -360 }}
-          transition={{
-            repeat: Infinity,
-            duration: 5,
-            ease: "linear",
-          }}
+          animate={controls}
+          custom={-1}
           src={bgDisc}
           alt="bgDisc"
           className="absolute left-[80%] h-5/6 hidden lg:block"
         />
-        <img src={logoTagline} alt="app-logo" className="h-72 my-16" />
-        {displayStatus(loggedIn, status, handleLogin)}
+        <motion.img
+          animate={{ y: ["70%", "0%"], opacity: [0, 1] }}
+          transition={{ duration: 1 }}
+          src={logoTagline}
+          alt="app-logo"
+          className="h-72 my-16"
+        />
+        <motion.div
+          animate={{ opacity: [0, 1] }}
+          transition={{ duration: 0.75, delay: 0.75 }}
+          className="flex flex-col items-center"
+        >
+          {displayStatus(loggedIn, status, handleLogin)}
+        </motion.div>
       </div>
     </div>
   );
@@ -54,7 +81,7 @@ function displayStatus(loggedIn, status, handleLogin) {
           fetching data
         </p>
       );
-    } else if (status == "Error") {
+    } else if (status == "Failed") {
       return (
         <p className="text-gray-300 mt-2" key="subheader">
           something went wrong
