@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import iconDisc from "../assets/top-tracks-disc.svg";
 import iconExpand from "../assets/expand.svg";
 import CardTopTrack from "./CardTopTrack";
+import Navlink from "./Navlink";
 
 function TopTracks({ data, timeRange, handleTimeRange, handleModal }) {
   const tracks = data[timeRange].items.slice(0, 5);
@@ -23,24 +24,18 @@ function TopTracks({ data, timeRange, handleTimeRange, handleModal }) {
       </motion.div>
       <div className="section">
         <div className="flex mb-10 -mt-10 gap-x-20 text-gray-300">
-          <p
-            className="time-range"
-            onClick={() => handleTimeRange("long_term")}
-          >
-            All Time
-          </p>
-          <p
-            className="time-range"
-            onClick={() => handleTimeRange("medium_term")}
-          >
-            Past Months
-          </p>
-          <p
-            className="time-range"
-            onClick={() => handleTimeRange("short_term")}
-          >
-            Most Recent
-          </p>
+          {[
+            ["All Time", "long_term"],
+            ["Past Months", "medium_term"],
+            ["Most Recent", "short_term"],
+          ].map((item) => (
+            <Navlink
+              rangeLabel={item[0]}
+              timeRange={item[1]}
+              selectedRange={timeRange}
+              handleTimeRange={handleTimeRange}
+            />
+          ))}
         </div>
         <div className="grid md:h-4/6 h-5/6 md:grid-rows-2 md:grid-cols-3 top-tracks lg:gap-8 gap-4 grid-cols-2 grid-rows-3 max-w-5xl relative px-5">
           {data &&

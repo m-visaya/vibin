@@ -15,6 +15,10 @@
     }
 
     .time-range {
-        @apply cursor-pointer hover:bg-primary-dark rounded-lg px-4 py-2 transition-colors ease-in duration-200
+        @apply cursor-pointer hover:bg-primary-dark rounded-lg px-4 py-1 transition-colors ease-in duration-200 text-lg text-gray-50 
+    }
+
+    .time-range.active {
+        @apply bg-primary-dark
     }
 }
