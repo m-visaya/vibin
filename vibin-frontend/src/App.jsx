@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 
 import "./index.css";
@@ -7,28 +7,16 @@ import Welcome from "./components/Welcome";
 import TopArtists from "./components/TopArtists";
 import TopTracks from "./components/TopTracks";
 import useFetch from "./useFetch";
+import useAuth from "./useAuth";
 
 function App() {
   const [modalVisible, setModalVisible] = useState(false);
-  const [loggedIn, setLoggedIn] = useState(false);
   const [timeRange, setTimeRange] = useState("long_term");
-  const [data, status] = useFetch(loggedIn);
-
-  useEffect(() => {
-    fetch("/api/session-active")
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        }
-        window.location = "/api/login";
-      })
-      .then((res) => {
-        setLoggedIn(res);
-      });
-  }, []);
+  const [accessToken, setAccessToken] = useAuth(null);
+  const [data, status] = useFetch(accessToken);
 
   const login = () => {
-    window.location = "/api/login";
+    location.replace("/api/auth");
   };
 
   const closeModal = () => {
@@ -49,8 +37,9 @@ function App() {
       <div className="bg-secondary flex flex-col items-center">
         <Welcome
           handleLogin={login}
-          loggedIn={loggedIn}
+          loggedIn={accessToken || data}
           status={status}
+          userProfile={data?.userProfile}
         ></Welcome>
         {data && [
           <TopTracks
