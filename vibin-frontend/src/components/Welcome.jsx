@@ -3,11 +3,12 @@ import { useEffect } from "react";
 
 import "../index.css";
 import Button from "./Button";
+import UserProfile from "./UserProfile";
 import logoTagline from "../assets/logo-tagline.svg";
 import bgDisc from "../assets/bg-disc.svg";
 import iconScrollDown from "../assets/icon-scroll-down.svg";
 
-function Welcome({ loggedIn, handleLogin, status }) {
+function Welcome({ loggedIn, handleLogin, status, userProfile }) {
   const controls = useAnimation();
 
   const sequence = async () => {
@@ -33,6 +34,7 @@ function Welcome({ loggedIn, handleLogin, status }) {
   return (
     <div className="relative overflow-hidden w-full">
       <div className="section mx-auto">
+        {userProfile && <UserProfile data={userProfile} />}
         <motion.img
           animate={{ rotate: 360 }}
           transition={{ repeat: Infinity, duration: 5, ease: "linear" }}
