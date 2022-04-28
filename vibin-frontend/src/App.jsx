@@ -21,9 +21,15 @@ function App() {
 
   const closeModal = () => {
     setModalVisible(false);
+    document.getElementById("body").style.paddingInlineEnd = "0";
+    document.getElementById("body").style.overflowY = "auto";
   };
   const openModal = () => {
     setModalVisible(true);
+    setTimeout(() => {
+      document.getElementById("body").style.paddingInlineEnd = "0.5rem";
+      document.getElementById("body").style.overflowY = "hidden";
+    }, 400);
   };
 
   return (
@@ -32,9 +38,10 @@ function App() {
         <ModalTop50
           handleClose={() => closeModal()}
           data={data.topTracks[timeRange]}
+          timeRange={timeRange}
         />
       )}
-      <div className="bg-secondary flex flex-col items-center">
+      <div className="bg-secondary flex flex-col items-center snap-y snap-mandatory overflow-auto h-screen">
         <Welcome
           handleLogin={login}
           loggedIn={accessToken || data}

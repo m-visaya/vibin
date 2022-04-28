@@ -23,7 +23,7 @@ function TopTracks({ data, timeRange, handleTimeRange, handleModal }) {
         </div>
       </motion.div>
       <div className="section">
-        <div className="flex mb-10 -mt-10 gap-x-20 text-gray-300">
+        <div className="flex mb-10 -mt-10 gap-x-10 md:gap-x-20 text-gray-300">
           {[
             ["All Time", "long_term"],
             ["Past Months", "medium_term"],
@@ -37,7 +37,7 @@ function TopTracks({ data, timeRange, handleTimeRange, handleModal }) {
             />
           ))}
         </div>
-        <div className="grid md:h-4/6 h-5/6 md:grid-rows-2 md:grid-cols-3 top-tracks lg:gap-8 gap-4 grid-cols-2 grid-rows-3 max-w-5xl relative px-5">
+        <div className="grid md:h-4/6 h-5/6 md:grid-rows-2 md:grid-cols-3 top-tracks lg:gap-6 gap-4 grid-cols-2 grid-rows-3 max-w-6xl relative px-5">
           {data &&
             tracks.map((item, index) => {
               return (

@@ -32,45 +32,43 @@ function Welcome({ loggedIn, handleLogin, status, userProfile }) {
   }, []);
 
   return (
-    <div className="relative overflow-hidden w-full">
-      <div className="section mx-auto">
-        {userProfile && <UserProfile data={userProfile} />}
-        <motion.img
-          animate={{ rotate: 360 }}
-          transition={{ repeat: Infinity, duration: 5, ease: "linear" }}
-          src={bgDisc}
-          alt="bgDisc"
-          className="absolute bottom-[80%] h-2/5 rotate-45 lg:hidden"
-        />
-        <motion.img
-          animate={controls}
-          custom={1}
-          src={bgDisc}
-          alt="bgDisc"
-          className="absolute right-[80%] h-5/6 rotate-90 hidden lg:block"
-        />
-        <motion.img
-          animate={controls}
-          custom={-1}
-          src={bgDisc}
-          alt="bgDisc"
-          className="absolute left-[80%] h-5/6 hidden lg:block"
-        />
-        <motion.img
-          animate={{ y: ["70%", "0%"], opacity: [0, 1] }}
-          transition={{ duration: 1 }}
-          src={logoTagline}
-          alt="app-logo"
-          className="h-72 my-16"
-        />
-        <motion.div
-          animate={{ opacity: [0, 1] }}
-          transition={{ duration: 0.75, delay: 0.75 }}
-          className="flex flex-col items-center"
-        >
-          {displayStatus(loggedIn, status, handleLogin)}
-        </motion.div>
-      </div>
+    <div className="section relative overflow-hidden w-full mx-auto">
+      {userProfile && <UserProfile data={userProfile} />}
+      <motion.img
+        animate={{ rotate: 360 }}
+        transition={{ repeat: Infinity, duration: 5, ease: "linear" }}
+        src={bgDisc}
+        alt="bgDisc"
+        className="absolute bottom-[80%] h-2/5 rotate-45 lg:hidden"
+      />
+      <motion.img
+        animate={controls}
+        custom={1}
+        src={bgDisc}
+        alt="bgDisc"
+        className="absolute right-[80%] h-5/6 rotate-90 hidden lg:block"
+      />
+      <motion.img
+        animate={controls}
+        custom={-1}
+        src={bgDisc}
+        alt="bgDisc"
+        className="absolute left-[80%] h-5/6 hidden lg:block"
+      />
+      <motion.img
+        animate={{ y: ["70%", "0%"], opacity: [0, 1] }}
+        transition={{ duration: 1 }}
+        src={logoTagline}
+        alt="app-logo"
+        className="h-72 my-16"
+      />
+      <motion.div
+        animate={{ opacity: [0, 1] }}
+        transition={{ duration: 0.75, delay: 0.75 }}
+        className="flex flex-col items-center"
+      >
+        {displayStatus(loggedIn, status, handleLogin)}
+      </motion.div>
     </div>
   );
 }

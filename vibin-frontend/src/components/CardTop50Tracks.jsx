@@ -6,10 +6,11 @@ function CardTop50Tracks({ title, artists, rank, cover }) {
         alt=""
         className="w-28 aspect-square object-cover rounded-xl"
       />
-      <div className="text-gray-300">
-        <h2 className="text-2xl line-clamp-2 leading-none">{title}</h2>
-        <p className="line-clamp-1">
-          {" "}
+      <div>
+        <h2 className="text-2xl line-clamp-2 text-gray-100 leading-tight">
+          {title}
+        </h2>
+        <p className="line-clamp-1 text-gray-300 font-light">
           {artists.reduce(
             (all_artists, artist, index) =>
               index + 1 < artists.length
