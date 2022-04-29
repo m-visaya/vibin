@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 
 import CardTop50Tracks from "./CardTop50Tracks";
 
@@ -7,14 +7,16 @@ function ModalTop50({ handleClose, data, timeRange }) {
   return (
     <motion.div
       initial={{ opacity: 0 }}
-      animate={{ opacity: [0, 1] }}
+      animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
+      exit={{ opacity: 0 }}
       className="w-screen h-screen bg-stone-900 fixed flex justify-center items-center content-center bg-opacity-95 z-50"
     >
       <motion.div
         initial={{ opacity: 0, y: 500 }}
-        animate={{ opacity: [0, 1], y: 0 }}
+        animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.75 }}
+        exit={{ opacity: 0, y: 500 }}
         className="w-full h-full rounded-xl opacity-100 flex flex-col items-center p-5 relative max-w-6xl"
       >
         <i

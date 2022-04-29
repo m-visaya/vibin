@@ -8,21 +8,27 @@ function TopArtists({ data }) {
 
   return (
     <>
-      <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        transition={{ duration: 1 }}
-        viewport={{ amount: 0.4 }}
-        className="section"
-      >
-        <div className="relative text-center flex flex-col -mt-36">
-          <img src={iconMic} className="h-36 -mb-4"></img>
+      <div className="section">
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 1 }}
+          viewport={{ amount: "all", once: true }}
+          className="relative text-center flex flex-col -mt-36"
+        >
+          <motion.img
+            whileInView={{ opacity: 1, y: [-100, 0] }}
+            transition={{ duration: 0.5 }}
+            viewport={{ amount: "all", once: true }}
+            src={iconMic}
+            className="h-36 -mb-4"
+          />
           <h1 className="text-gray-300">YOUR TOP</h1>
           <h1 className="text-primary">ARTISTS</h1>
-        </div>
-      </motion.div>
+        </motion.div>
+      </div>
       <motion.div
-        viewport={{ amount: 0.4 }}
+        viewport={{ amount: "all", once: true }}
         initial={{ opacity: 0 }}
         transition={{ duration: 1 }}
         whileInView={{ opacity: 1 }}

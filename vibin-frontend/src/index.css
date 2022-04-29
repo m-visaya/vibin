@@ -7,7 +7,7 @@
 
 @layer components {
     .section {
-        @apply flex justify-center content-center items-center flex-col snap-always snap-center min-h-[150vh] py-[25vh] -scroll-my-[25vh]
+        @apply flex justify-center content-center items-center flex-col snap-center min-h-screen
     }
     h1 {
         @apply text-8xl font-bold
@@ -27,7 +27,7 @@
 }
 
 *::-webkit-scrollbar {
-    width: .60rem;
+    width: .6rem;
     background-color: #3F3F3F;
   }
    

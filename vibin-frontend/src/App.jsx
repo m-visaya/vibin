@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 
 import "./index.css";
 import ModalTop50 from "./components/ModalTop50";
@@ -21,27 +21,27 @@ function App() {
 
   const closeModal = () => {
     setModalVisible(false);
-    document.getElementById("body").style.paddingInlineEnd = "0";
     document.getElementById("body").style.overflowY = "auto";
   };
   const openModal = () => {
     setModalVisible(true);
     setTimeout(() => {
-      document.getElementById("body").style.paddingInlineEnd = "0.5rem";
       document.getElementById("body").style.overflowY = "hidden";
     }, 400);
   };
 
   return (
     <>
-      {modalVisible && (
-        <ModalTop50
-          handleClose={() => closeModal()}
-          data={data.topTracks[timeRange]}
-          timeRange={timeRange}
-        />
-      )}
-      <div className="bg-secondary flex flex-col items-center snap-y snap-mandatory overflow-auto h-screen overflow-x-hidden">
+      <AnimatePresence>
+        {modalVisible && (
+          <ModalTop50
+            handleClose={() => closeModal()}
+            data={data.topTracks[timeRange]}
+            timeRange={timeRange}
+          />
+        )}
+      </AnimatePresence>
+      <div className="bg-secondary flex flex-col items-center snap-y snap-proximity overflow-auto h-screen overflow-x-hidden">
         <Welcome
           handleLogin={login}
           loggedIn={accessToken || data}

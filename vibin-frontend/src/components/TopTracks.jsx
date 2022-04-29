@@ -1,16 +1,23 @@
 import { motion, useAnimation } from "framer-motion";
+import { useEffect, useState } from "react";
 
 import iconDisc from "../assets/top-tracks-disc.svg";
 import iconExpand from "../assets/expand.svg";
 import CardTopTrack from "./CardTopTrack";
 import Navlink from "./Navlink";
-import { useEffect } from "react";
 
 function TopTracks({ data, timeRange, handleTimeRange, handleModal }) {
+  const [onViewportOnce, setViewportOnce] = useState(false);
   const tracks = data[timeRange].items.slice(0, 5);
   const controls = useAnimation();
 
-  const sequence = async () => {
+  const sequence = async (viewport) => {
+    if (viewport) {
+      if (onViewportOnce) {
+        return;
+      }
+      setViewportOnce(true);
+    }
     await controls.start((i) => ({
       opacity: 0,
       transition: { duration: 0 },
@@ -28,25 +35,31 @@ function TopTracks({ data, timeRange, handleTimeRange, handleModal }) {
 
   return (
     <>
-      <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        transition={{ duration: 1 }}
-        viewport={{ amount: 0.4 }}
-        className="section"
-      >
-        <div className="relative text-center flex flex-col -mt-36">
-          <img src={iconDisc} className="h-36 -mb-4"></img>
+      <div className="section">
+        <motion.div
+          viewport={{ amount: "all", once: true }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 1 }}
+          className="relative text-center flex flex-col -mt-32"
+        >
+          <motion.img
+            whileInView={{ opacity: 1, x: [-300, 0], rotate: [0, 360] }}
+            transition={{ duration: 1 }}
+            viewport={{ amount: "all", once: true }}
+            src={iconDisc}
+            className="h-36"
+          />
           <h1 className="text-gray-300">YOUR TOP</h1>
           <h1 className="text-primary">TRACKS</h1>
-        </div>
-      </motion.div>
+        </motion.div>
+      </div>
       <motion.div
-        viewport={{ amount: 0.4 }}
+        viewport={{ amount: "all", once: true }}
         initial={{ opacity: 0 }}
-        transition={{ duration: 0.25 }}
+        transition={{ duration: 1 }}
         whileInView={{ opacity: 1 }}
-        onViewportEnter={() => sequence()}
+        onViewportEnter={() => sequence(true)}
         className="section"
       >
         <div className="flex mb-10 -mt-10 gap-x-10 md:gap-x-20 text-gray-300">
@@ -78,7 +91,7 @@ function TopTracks({ data, timeRange, handleTimeRange, handleModal }) {
               );
             })}
           <p
-            className="text-gray-300 absolute -bottom-10 right-0 px-5 cursor-pointer"
+            className="text-gray-300 absolute -bottom-12 right-0 px-5 cursor-pointer"
             onClick={handleModal}
           >
             view top 50

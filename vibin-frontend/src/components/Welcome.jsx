@@ -6,7 +6,6 @@ import Button from "./Button";
 import UserProfile from "./UserProfile";
 import logoTagline from "../assets/logo-tagline.svg";
 import bgDisc from "../assets/bg-disc.svg";
-import iconScrollDown from "../assets/icon-scroll-down.svg";
 
 function Welcome({ loggedIn, handleLogin, status, userProfile }) {
   const controls = useAnimation();
@@ -39,7 +38,7 @@ function Welcome({ loggedIn, handleLogin, status, userProfile }) {
         transition={{ repeat: Infinity, duration: 5, ease: "linear" }}
         src={bgDisc}
         alt="bgDisc"
-        className="absolute bottom-[80%] h-2/5 rotate-45 lg:hidden"
+        className="absolute h-2/5 rotate-45 lg:hidden"
       />
       <motion.img
         animate={controls}
@@ -89,7 +88,15 @@ function displayStatus(loggedIn, status, handleLogin) {
       );
     } else {
       return [
-        <img src={iconScrollDown} alt="" />,
+        <div className="mt-5 bg-gray-50 h-[50px] w-[30px] rounded-xl py-1 flex flex-col items-center">
+          <motion.div
+            initial={{ opacity: 1 }}
+            animate={{ y: [0, 25], opacity: [1, 0] }}
+            transition={{ repeat: Infinity, duration: 1.5 }}
+            className="h-[20px] aspect-square bg-primary-dark rounded-full"
+          />
+        </div>,
+
         <p className="text-gray-300 mt-2">scroll down to start</p>,
       ];
     }
