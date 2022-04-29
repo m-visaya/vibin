@@ -32,7 +32,7 @@ function Welcome({ loggedIn, handleLogin, status, userProfile }) {
   }, []);
 
   return (
-    <div className="section relative overflow-hidden w-full mx-auto">
+    <div className="relative overflow-hidden w-full mx-auto min-h-screen snap-center flex justify-center content-center items-center flex-col">
       {userProfile && <UserProfile data={userProfile} />}
       <motion.img
         animate={{ rotate: 360 }}

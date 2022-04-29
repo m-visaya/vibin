@@ -41,7 +41,7 @@ function App() {
           timeRange={timeRange}
         />
       )}
-      <div className="bg-secondary flex flex-col items-center snap-y snap-mandatory overflow-auto h-screen">
+      <div className="bg-secondary flex flex-col items-center snap-y snap-mandatory overflow-auto h-screen overflow-x-hidden">
         <Welcome
           handleLogin={login}
           loggedIn={accessToken || data}

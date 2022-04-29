@@ -1,7 +1,7 @@
 function CardTopTrack({ title, artists, cover }) {
   return (
     <div
-      className="flex flex-col bg-cover bg-center rounded-md cursor-pointer relative hover:brightness-[0.6] transition-[filter] ease-in"
+      className="flex flex-col bg-cover bg-center rounded-md cursor-pointer relative hover:brightness-[0.6] transition-[filter] ease-in w-full h-full"
       style={{ backgroundImage: `url(${cover})` }}
     >
       <div className="absolute h-full w-full rounded-md bg-gradient-to-t from-neutral-900 bottom-0 left-0"></div>
