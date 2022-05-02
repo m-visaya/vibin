@@ -59,7 +59,7 @@ function Welcome({ loggedIn, handleLogin, status, userProfile }) {
         transition={{ duration: 1 }}
         src={logoTagline}
         alt="app-logo"
-        className="h-72 my-16"
+        className="h-72 my-24"
       />
       <motion.div
         animate={{ opacity: [0, 1] }}
@@ -88,11 +88,11 @@ function displayStatus(loggedIn, status, handleLogin) {
       );
     } else {
       return [
-        <div className="mt-5 bg-gray-50 h-[50px] w-[30px] rounded-xl py-1 flex flex-col items-center">
+        <div className="bg-gray-50 h-[50px] w-[30px] rounded-xl py-1 flex flex-col items-center content-center">
           <motion.div
             initial={{ opacity: 1 }}
-            animate={{ y: [0, 25], opacity: [1, 0] }}
-            transition={{ repeat: Infinity, duration: 1.5 }}
+            animate={{ y: [0, 0, 25], opacity: [1, 1, 1, 1, 1, 1, 0] }}
+            transition={{ repeat: Infinity, duration: 4 }}
             className="h-[20px] aspect-square bg-primary-dark rounded-full"
           />
         </div>,

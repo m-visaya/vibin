@@ -10,19 +10,23 @@
         @apply flex justify-center content-center items-center flex-col snap-center min-h-screen
     }
     h1 {
-        @apply text-8xl font-bold
+        @apply text-6xl md:text-8xl font-bold
     }
 
     .top-tracks > :first-child {
-        @apply md:row-span-2 col-span-2 md:col-span-1
+        @apply md:row-span-2 col-span-1 md:col-span-1
     }
 
     .time-range {
-        @apply cursor-pointer hover:bg-primary-dark rounded-lg px-4 py-1 transition-colors ease-in duration-200 text-base md:text-lg text-gray-200
+        @apply cursor-pointer md:px-4 py-1 text-base md:text-lg text-gray-200 hover:text-primary-dark text-center select-none
     }
 
     .time-range.active {
-        @apply bg-primary-dark
+        @apply border-b-2 border-primary-dark outline-2 text-primary-dark
+    }
+
+    * {
+        @apply select-none
     }
 }
 

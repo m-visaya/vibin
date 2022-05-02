@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from "framer-motion";
 
 import CardTop50Tracks from "./CardTop50Tracks";
 
-function ModalTop50({ handleClose, data, timeRange }) {
+function ModalTop50({ handleClose, data, timeRange, href }) {
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -20,7 +20,7 @@ function ModalTop50({ handleClose, data, timeRange }) {
         className="w-full h-full rounded-xl opacity-100 flex flex-col items-center p-5 relative max-w-6xl"
       >
         <i
-          className="bi bi-x-circle absolute top-0 sm:top-7 right-0 text-gray-300 mx-8 my-4 text-3xl hover:text-white cursor-pointer"
+          className="bi bi-x-circle absolute top-0 sm:top-7 right-0 text-gray-300 mx-8 my-4 text-2xl md:text-3xl hover:text-white cursor-pointer"
           onClick={handleClose}
         ></i>
         <h4 className="bg-primary text-black px-3 rounded-md mb-2 font-medium">
@@ -30,10 +30,10 @@ function ModalTop50({ handleClose, data, timeRange }) {
             ? "Past Months"
             : "All Time"}
         </h4>
-        <h2 className="text-gray-300 text-5xl font-bold uppercase">
+        <h2 className="text-gray-300 text-4xl md:text-5xl font-bold uppercase">
           Top 50 <span className="text-primary">Tracks</span>
         </h2>
-        <div className="mt-10 grid md:grid-cols-2 gap-x-10 gap-y-6 w-full lg:gap-x-32 overflow-y-auto px-12">
+        <div className="mt-5 md:mt-10 grid md:grid-cols-2 gap-x-10 gap-y-6 w-full lg:gap-x-32 overflow-y-auto md:px-12">
           {data &&
             data.items.map((item, index) => {
               return (
@@ -41,6 +41,7 @@ function ModalTop50({ handleClose, data, timeRange }) {
                   rank={index + 1}
                   title={item.name}
                   artists={item.artists}
+                  href={item.external_urls.spotify}
                   key={index}
                   cover={item.album.images[0].url}
                 ></CardTop50Tracks>

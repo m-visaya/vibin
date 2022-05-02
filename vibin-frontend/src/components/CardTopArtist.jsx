@@ -1,6 +1,8 @@
-function CardTopArtist({ name, followers, cover }) {
+import spotifyLogo from "../assets/spotify/Spotify_Logo_RGB_Green.png";
+
+function CardTopArtist({ name, followers, cover, href }) {
   return (
-    <div className="flex gap-4">
+    <div className="flex gap-4 relative">
       <img
         src={cover}
         alt=""
@@ -8,8 +10,17 @@ function CardTopArtist({ name, followers, cover }) {
       />
       <div className="text-gray-300">
         <h2 className="text-2xl line-clamp-2">{name}</h2>
-        <p>{formatFollowers(followers)} followers</p>
+        <p className="text-primary-dark">
+          {formatFollowers(followers)} followers
+        </p>
       </div>
+      <a
+        href={href}
+        target="_blank"
+        className="absolute w-max bottom-0 right-0 cursor-pointer"
+      >
+        <img src={spotifyLogo} alt="" className="h-6 w-auto" />
+      </a>
     </div>
   );
 }

@@ -5,6 +5,7 @@ import CardTopArtist from "./CardTopArtist";
 
 function TopArtists({ data }) {
   const controls = useAnimation();
+  const artists = data.items.slice(0, 4);
 
   return (
     <>
@@ -28,19 +29,20 @@ function TopArtists({ data }) {
         </motion.div>
       </div>
       <motion.div
-        viewport={{ amount: "all", once: true }}
+        viewport={{ amount: 0.6, once: true }}
         initial={{ opacity: 0 }}
         transition={{ duration: 1 }}
         whileInView={{ opacity: 1 }}
         className="section grid md:grid-cols-2 md:gap-20 max-w-5xl gap-7 px-10"
       >
-        {data &&
-          data.items.map((item, index) => {
+        {artists &&
+          artists.map((item, index) => {
             return (
               <CardTopArtist
                 name={item.name}
                 followers={item.followers.total}
                 cover={item.images[0].url}
+                href={item.external_urls.spotify}
                 key={"top-artist-" + index}
               />
             );

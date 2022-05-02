@@ -1,4 +1,6 @@
-function CardTop50Tracks({ title, artists, rank, cover }) {
+import spotifyIcon from "../assets/spotify/Spotify_Icon_RGB_Green.png";
+
+function CardTop50Tracks({ title, artists, rank, cover, href }) {
   return (
     <div className="flex gap-4 relative">
       <img
@@ -19,6 +21,13 @@ function CardTop50Tracks({ title, artists, rank, cover }) {
             ""
           )}
         </p>
+        <a href={href} target="_blank">
+          <img
+            src={spotifyIcon}
+            alt="spotifyIcon"
+            className="h-5 mt-1 cursor-pointer"
+          />
+        </a>
       </div>
       <h3 className="absolute bottom-0 right-0 text-gray-300 text-4xl p-2 font-bold">
         {rank}

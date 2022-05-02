@@ -55,14 +55,14 @@ function TopTracks({ data, timeRange, handleTimeRange, handleModal }) {
         </motion.div>
       </div>
       <motion.div
-        viewport={{ amount: "all", once: true }}
+        viewport={{ amount: 0.6, once: true }}
         initial={{ opacity: 0 }}
         transition={{ duration: 1 }}
         whileInView={{ opacity: 1 }}
         onViewportEnter={() => sequence(true)}
         className="section"
       >
-        <div className="flex mb-10 -mt-10 gap-x-10 md:gap-x-20 text-gray-300">
+        <div className="flex md:mb-12 mb-5 -mt-10 gap-x-10 md:gap-x-20 text-gray-300 w-full justify-center">
           {[
             ["All Time", "long_term"],
             ["Past Months", "medium_term"],
@@ -76,7 +76,7 @@ function TopTracks({ data, timeRange, handleTimeRange, handleModal }) {
             />
           ))}
         </div>
-        <motion.div className="grid md:h-4/6 h-5/6 md:grid-rows-2 md:grid-cols-3 top-tracks lg:gap-6 gap-4 grid-cols-2 grid-rows-3 max-w-6xl relative px-5">
+        <motion.div className="grid md:h-3/5 h-3/4 md:grid-rows-2 md:grid-cols-3 top-tracks lg:gap-6 gap-4 grid-cols-2 grid-rows-3 max-w-5xl relative px-5">
           {data &&
             tracks.map((item, index) => {
               return (
@@ -85,17 +85,22 @@ function TopTracks({ data, timeRange, handleTimeRange, handleModal }) {
                     title={item.name}
                     artists={item.artists}
                     cover={item.album.images[0].url}
+                    href={item.external_urls.spotify}
                     key={"top-track-" + index}
                   />
                 </motion.div>
               );
             })}
           <p
-            className="text-gray-300 absolute -bottom-12 right-0 px-5 cursor-pointer"
+            className="text-gray-300 absolute -bottom-12 md:right-0 px-5 cursor-pointer"
             onClick={handleModal}
           >
             view top 50
-            <img src={iconExpand} alt="expand" className="inline w-5 mb-2" />
+            <img
+              src={iconExpand}
+              alt="expand"
+              className="inline w-5 mb-2 ml-1"
+            />
           </p>
         </motion.div>
       </motion.div>
