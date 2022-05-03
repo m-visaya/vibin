@@ -6,6 +6,7 @@ import ModalTop50 from "./components/ModalTop50";
 import Welcome from "./components/Welcome";
 import TopArtists from "./components/TopArtists";
 import TopTracks from "./components/TopTracks";
+import TopGenre from "./components/TopGenre";
 import useFetch from "./useFetch";
 import useAuth from "./useAuth";
 
@@ -60,6 +61,10 @@ function App() {
             data={data.topArtists}
             key="container-top-artists"
           ></TopArtists>,
+          <TopGenre
+            topGenre={data.topGenre}
+            genreCount={data.genreCount}
+          ></TopGenre>,
         ]}
       </div>
     </>
