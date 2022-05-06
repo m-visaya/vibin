@@ -34,33 +34,33 @@ function TopGenre({ genreCount, topGenre }) {
       onViewportEnter={startSequence}
       className="section lg:flex-row w-full max-w-6xl leading-none"
     >
-      <div className="w-1/2 flex flex-col items-center text-gray-300">
+      <div className="sm:w-1/2 flex flex-col items-center text-gray-300">
         <p className="text-lg lg:text-2xl -mb-6">your music palette includes</p>
         <motion.h2
           viewport={{ amount: 0.6, once: true }}
           initial={{ y: 200, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
-          className="text-primary text-[10rem] lg:text-[15rem] font-bold"
+          className="text-gray-100 text-[10rem] lg:text-[15rem] font-bold"
         >
           {count}
         </motion.h2>
-        <p className="text-5xl lg:text-6xl text-gray-100 font-medium -mt-3">
+        <p className="text-5xl lg:text-6xl text-primary font-medium -mt-3">
           genres
         </p>
       </div>
       <motion.div
         animate={controls}
         initial={{ y: 200, opacity: 0 }}
-        className="mt-20 lg:mt-0 w-1/2 flex flex-col items-center text-gray-300"
+        className="mt-10 mb-24 sm:mb-0 sm:mt-20 lg:mt-0 sm:w-1/2 flex flex-col items-center text-gray-300"
       >
-        <h2 className="text-primary text-8xl lg:text-9xl font-bold uppercase">
+        <h2 className="text-gray-200 text-8xl lg:text-9xl font-bold uppercase">
           {topGenre}
         </h2>
         <motion.p
           animate={{ opacity: 1 }}
           initial={{ opacity: 0 }}
           transition={{ delay: 3.5 }}
-          className="md:text-2xl"
+          className="md:text-3xl text-primary"
         >
           is your top genre
         </motion.p>

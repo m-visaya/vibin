@@ -73,6 +73,7 @@ function TopTracks({ data, timeRange, handleTimeRange, handleModal }) {
               timeRange={item[1]}
               selectedRange={timeRange}
               handleTimeRange={handleTimeRange}
+              key={`navlink-${item[1]}`}
             />
           ))}
         </div>
