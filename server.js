@@ -25,6 +25,12 @@ const generateRandomString = function (length) {
   return text;
 };
 
+app.use(express.static("vibin-frontend/dist"));
+
+app.get("/", (req, res) => {
+  res.sendFile(__dirname + "/vibin-frontend/dist/index.html");
+});
+
 app.get("/api/auth", (req, res) => {
   var state = generateRandomString(32);
   res.cookie(stateKey, state, { signed: true, httpOnly: true });
@@ -159,4 +165,4 @@ app.get("/api/listening-stats", async (req, res) => {
   }
 });
 
-app.listen(5000);
+app.listen(3000);
