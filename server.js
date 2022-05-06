@@ -138,4 +138,25 @@ app.get("/api/user-profile", async (req, res) => {
   }
 });
 
+app.get("/api/listening-stats", async (req, res) => {
+  const accessToken = req.query.access_token || null;
+  const ids = req.query.ids || null;
+
+  try {
+    let response = await axios({
+      method: "get",
+      url:
+        "https://api.spotify.com/v1/audio-features?" +
+        qs.stringify({ ids: ids }),
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      },
+    });
+    res.send(response.data);
+  } catch (error) {
+    res.status(500).send("Something went wrong");
+  }
+});
+
 app.listen(5000);

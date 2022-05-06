@@ -7,6 +7,8 @@ import Welcome from "./components/Welcome";
 import TopArtists from "./components/TopArtists";
 import TopTracks from "./components/TopTracks";
 import TopGenre from "./components/TopGenre";
+import ListeningStats from "./components/ListeningStats";
+
 import useFetch from "./useFetch";
 import useAuth from "./useAuth";
 
@@ -64,7 +66,12 @@ function App() {
           <TopGenre
             topGenre={data.topGenre}
             genreCount={data.genreCount}
+            key="container-top-genre"
           ></TopGenre>,
+          <ListeningStats
+            data={data.listeningStats}
+            key="container-top-listening-stats"
+          />,
         ]}
       </div>
     </>
