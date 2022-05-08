@@ -11,6 +11,7 @@ var client_id = process.env.CLIENT_ID;
 var redirect_uri = process.env.REDIRECT_URI;
 var scope = process.env.SCOPE;
 var stateKey = "spotify_auth_state";
+const port = process.env.PORT || 5000;
 
 app.use(cookieParser(secret));
 
@@ -60,7 +61,7 @@ app.get("/api/verify-state", (req, res) => {
 });
 
 app.get("/callback", async (req, res) => {
-  res.redirect("http://localhost:3000");
+  res.redirect("/");
 });
 
 app.get("/api/top-artists", async (req, res) => {
@@ -165,4 +166,4 @@ app.get("/api/listening-stats", async (req, res) => {
   }
 });
 
-app.listen(3000);
+app.listen(port);
