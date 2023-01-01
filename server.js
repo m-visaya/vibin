@@ -167,3 +167,5 @@ app.get("/api/listening-stats", async (req, res) => {
 });
 
 app.listen(port);
+
+module.exports = app;
