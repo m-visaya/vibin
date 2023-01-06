@@ -35,7 +35,7 @@ function TopTracks({ data, timeRange, handleTimeRange, handleModal }) {
 
   return (
     <>
-      <div className="section">
+      <div className="section bg-neutral-800 w-full">
         <motion.div
           viewport={{ amount: "all", once: true }}
           initial={{ opacity: 0 }}
@@ -77,7 +77,7 @@ function TopTracks({ data, timeRange, handleTimeRange, handleModal }) {
             />
           ))}
         </div>
-        <motion.div className="grid md:h-3/5 h-3/4 md:grid-rows-2 md:grid-cols-3 top-tracks lg:gap-6 gap-4 grid-cols-2 grid-rows-3 max-w-5xl relative px-5">
+        <motion.div className="grid md:h-3/5 h-3/4 md:grid-rows-2 md:grid-cols-3 top-tracks lg:gap-6 gap-4 grid-cols-2 grid-rows-3 max-w-5xl relative px-5 w-[64rem]">
           {data &&
             tracks.map((item, index) => {
               return (

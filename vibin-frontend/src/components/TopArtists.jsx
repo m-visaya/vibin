@@ -9,7 +9,7 @@ function TopArtists({ data }) {
 
   return (
     <>
-      <div className="section">
+      <div className="section bg-neutral-800 w-full">
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -33,7 +33,7 @@ function TopArtists({ data }) {
         initial={{ opacity: 0 }}
         transition={{ duration: 1 }}
         whileInView={{ opacity: 1 }}
-        className="section grid md:grid-cols-2 md:gap-20 max-w-5xl gap-7 px-10"
+        className="section grid md:grid-cols-4 md:gap-24 max-w-5xl gap-7 px-10"
       >
         {artists &&
           artists.map((item, index) => {
